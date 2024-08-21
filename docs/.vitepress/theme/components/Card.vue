@@ -2,7 +2,9 @@
 import json from '../../../public/plugin_list.json'
 
 function goToPage(url: string) {
-  window.open(url, '_blank')
+  setTimeout(() => {
+    window.open(url, '_blank')
+  }, 140)
 }
 </script>
 
@@ -174,7 +176,7 @@ a {
 }
 
 /* hover */
-.card:hover {
+.card:hover, .card:active {
   transition: 0.4s ease;
   transform: scale(1.05);
   background-color: rgba(251, 68, 68, 0.8);
@@ -208,9 +210,12 @@ a {
 }
 
 @media screen and (max-width: 768px) {
-  .card:hover {
-    transition: 0.01s ease;
-    transform: scale(1);
+  .card {
+    transition: 0 !important;
+  }
+
+  .card:hover, .card:active {
+    transform: scale(1.05);
   }
 }
 </style>
