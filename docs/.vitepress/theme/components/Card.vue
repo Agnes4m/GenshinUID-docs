@@ -175,8 +175,7 @@ a {
 
 /* hover */
 .card:hover {
-  cursor: default !important;
-  transition: transform 0.4s ease;
+  transition: 0.4s ease;
   transform: scale(1.05);
   background-color: rgba(251, 68, 68, 0.8);
   backdrop-filter: blur(10px);
@@ -205,6 +204,13 @@ a {
 @media screen and (min-width: 768px) {
   .card {
     cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .card:hover {
+    transition: 0.01s ease;
+    transform: scale(1);
   }
 }
 </style>
