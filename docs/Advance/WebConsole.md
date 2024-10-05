@@ -1,6 +1,9 @@
 # 网页控制台<Badge type="tip" text="普通" />
 
-- `网页控制台`无需开关，在`gsuid_core`包含插件`GenshinUID`时自动开启
+- `网页控制台`无需开关，`gsuid_core`启动时将会自动启动
+
+
+![image-20241006060218860](./../public/WebConsole/image-20241006060218860.png)
 
 - 地址为`IP:PORT/genshinuid`,初始账号密码为`root`/`root`,进入之后请**务必**修改密码
 - 默认的IP为`localhost`，PORT为`8765`，即**默认地址**为`localhost:8765/genshinuid`

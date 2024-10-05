@@ -98,12 +98,14 @@ GsCore当然也提供了更上游的基类以供继承，下面是具体代码�
 ![image-20240818182411857](./../public/PluginsDataBase/image-20240818182411857.png)
 
 
+演示参考如下 ⬇
+
 ```python
 from typing import Optional
 
 from sqlmodel import Field
 
-from gsuid_core.utils.database.base_models import BaseModel
+from gsuid_core.utils.database.base_models import BaseModel, with_session
 
 # 创建类时传参带上`table=True`才是建表，否则只是Python内部的类继承，不会实际建立表格
 class MyTable(BaseModel, table=True):
@@ -113,11 +115,51 @@ class MyTable(BaseModel, table=True):
 
     # 示例一个类方法
     @classmethod
+    @with_session
     async def get_user_city(
         cls,
+        session: AsyncSession,
         user_id: str,
     ) -> Optional[str]:
         '''根据传入`user_id`，判定是否绑定城市'''
         data = await cls.select_data(user_id)
         return data.city if data else None
 ```
+
+[实例参考](https://github.com/KimigaiiWuyi/MajsoulUID/blob/main/MajsoulUID/utils/database/models.py) ⬇
+
+```python
+class MajsPaipu(BaseIDModel, table=True):
+    account_id: str = Field(default="", title="雀魂账号ID")
+    uuid: str = Field(default="", title="牌谱UUID")
+    paipu_type: int = Field(default=-1, title="牌谱类型")
+    paipu_type_name: str = Field(default="", title="牌谱类型名称")
+
+    @classmethod
+    @with_session
+    async def insert_data(
+        cls: Type[T_MajsPaipu],
+        session: AsyncSession,
+        uuid: str,
+        account_id: str,
+        paipu_type: int,
+        paipu_type_name: str,
+    ) -> int:
+        return await cls.full_insert_data(
+            uuid=uuid,
+            account_id=account_id,
+            paipu_type=paipu_type,
+            paipu_type_name=paipu_type_name,
+        )
+
+    @classmethod
+    @with_session
+    async def data_exist(
+        cls: Type[T_MajsPaipu], session: AsyncSession, uuid: str
+    ) -> bool:
+        stmt = select(cls).where(cls.uuid == uuid)
+        result = await session.execute(stmt)
+        data = result.scalars().all()
+        return bool(data)
+```
+
